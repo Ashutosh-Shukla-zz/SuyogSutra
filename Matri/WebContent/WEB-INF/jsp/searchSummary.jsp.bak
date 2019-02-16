@@ -1,0 +1,293 @@
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ page import="com.matri.bean.SearchResultBean"%>
+
+<!-- BEGIN: PAGE CONTAINER -->
+<div class="c-layout-page">
+	<!-- BEGIN: LAYOUT/BREADCRUMBS/BREADCRUMBS-1 -->
+	<div class="c-layout-breadcrumbs-1 c-fonts-uppercase c-fonts-bold">
+		<div class="container">
+
+			<div class="c-page-title c-pull-left">
+				<h3 class="c-font-uppercase c-font-sbold">User Details</h3>
+			</div>
+			<ul
+				class="c-page-breadcrumbs c-theme-nav c-pull-right c-fonts-regular">
+				<li><a href="#">Components</a></li>
+				<li>/</li>
+				<li><a href="javascript:;">Jango Components</a></li>
+				<li>/</li>
+				<li class="c-state_active">Tabbed Contents</li>
+			</ul>
+		</div>
+	</div>
+	<!-- END: LAYOUT/BREADCRUMBS/BREADCRUMBS-1 -->
+	<!-- BEGIN: PAGE CONTENT -->
+
+
+
+	<div class="c-content-box c-size-md">
+		<div class="container">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">SEARCH PROFILES</h3>
+				</div>
+				<div class="panel-body">
+					<form:form class="form-horizontal" modelAttribute="expectationBean"
+						action="">
+						<div class="col-md-6 col-sm-12">
+							<div class="form-group">
+								<label for="caste" class="col-md-4 control-label">Caste</label>
+								<div class="col-md-6">
+									<form:input type="text" class="form-control  c-square c-theme"
+										path="caste" id="caste" placeholder="Caste" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="subCaste" class="col-md-4 control-label">Sub
+									Caste</label>
+								<div class="col-md-6">
+									<form:input type="text" class="form-control  c-square c-theme"
+										path="subCaste" id="subCaste" placeholder="Sub Caste" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="complexion" class="col-md-4 control-label">Complexion</label>
+								<div class="col-md-6">
+									<form:input type="text" class="form-control  c-square c-theme"
+										path="complexion" id="complexion" placeholder="Complexion" />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="spectacles" class="col-md-4 control-label">Spectacles</label>
+								<div class="col-md-6">
+									<form:input type="text" class="form-control  c-square c-theme"
+										path="spectacles" id="spectacles" placeholder="Spectacles" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="minHeight" class="col-md-4 control-label">Minimum
+									Height</label>
+								<div class="col-md-6">
+									<form:input type="text" class="form-control  c-square c-theme"
+										path="heightMin" id="minHeight" placeholder="Minimum Height" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="weight" class="col-md-4 control-label">Weight</label>
+								<div class="col-md-6">
+									<form:input type="text" class="form-control  c-square c-theme"
+										path="weight" id="weight" placeholder="Weight" />
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-12">
+							<div class="form-group">
+								<label for="gotra1" class="col-md-4 control-label">Gotra</label>
+								<div class="col-md-6">
+									<form:input type="text" class="form-control  c-square c-theme"
+										path="gotra" id="gotra1" placeholder="Gotra" />
+								</div>
+							</div>
+							<div class="form-group form-c-radios">
+								<label class="col-md-4 control-label">Manglik</label>
+								<div class="col-md-6">
+									<div class="c-radio-inline">
+										<div class="c-radio">
+											<form:radiobutton id="manglik3" class="c-radio"
+												path="manglik" />
+											<label for="manglik3"> <span></span> <span
+												class="check"></span> <span class="box"></span>Yes
+											</label>
+										</div>
+										<div class="c-radio">
+											<form:radiobutton id="manglik4" class="c-radio"
+												path="manglik" />
+											<label for="manglik4"> <span></span> <span
+												class="check"></span> <span class="box"></span>No
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="prefferedCity" class="col-md-4 control-label">Preffered
+									City</label>
+								<div class="col-md-6">
+									<form:input type="text" class="form-control  c-square c-theme"
+										path="prefferedCity" id="prefferedCity"
+										placeholder="Preffered City" />
+								</div>
+							</div>
+
+							<div class="form-group form-c-radios">
+								<label class="col-md-4 control-label">Marital Status</label>
+								<div class="col-md-6">
+									<div class="c-radio-inline">
+										<div class="c-radio">
+											<form:radiobutton id="radio4-113" class="c-radio"
+												path="maritalStatus" />
+											<label for="radio4-113"> <span></span> <span
+												class="check"></span> <span class="box"></span>Single
+											</label>
+										</div>
+										<div class="c-radio">
+											<form:radiobutton id="radio5-114" class="c-radio"
+												path="maritalStatus" />
+											<label for="radio5-114"> <span></span> <span
+												class="check"></span> <span class="box"></span>Divorced
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="ageFrom" class="col-md-4 control-label">Age
+									From</label>
+								<div class="col-md-6">
+									<form:input type="number"
+										class="form-control  c-square c-theme" id="ageFrom"
+										path="ageFrom" placeholder="Age From" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="ageTo" class="col-md-4 control-label">Age To</label>
+								<div class="col-md-6">
+									<form:input type="number"
+										class="form-control  c-square c-theme" id="ageTo" path="ageTo"
+										placeholder="Age To" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="educationalQualification"
+									class="col-md-4 control-label">Educational
+									Qualification</label>
+								<div class="col-md-6">
+									<form:input type="text" class="form-control  c-square c-theme"
+										path="educationalQualification" id="educationalQualification"
+										placeholder="Educational Qualification" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="occupation" class="col-md-4 control-label">Occupation</label>
+								<div class="col-md-6">
+									<form:input type="text" class="form-control  c-square c-theme"
+										path="occupation" id="occupation" placeholder="Occupation" />
+								</div>
+							</div>
+							<div class="form-group">
+								<input type="submit" value="Submit"
+									class=" btn btn-primary btn-lg"></input>
+							</div>
+						</div>
+					</form:form>
+				</div>
+			</div>
+			<div class="panel panel-default">
+			<div class="panel-heading">
+					<h3 class="panel-title">SEARCHED RESULTS</h3>
+				</div>
+				<div class="panel-body">
+					<form:form class="form-horizontal" modelAttribute="expectationBean"
+						action="requestAllDetails">
+
+						<%@ page import="java.util.*"%>
+						<jsp:useBean id="expectationBean"
+							class="com.matri.bean.ExpectationBean" scope="request" />
+
+						<div class="c-content-panel">
+							<div class="c-body">
+								<div class="row">
+									<div class="col-md-12">
+										<table class="table table-striped">
+											<thead>
+												<tr>
+													<th>#</th>
+													<th>User Id</th>
+													<th>DOB</th>
+													<th>Height</th>
+													<th>Complexion</th>
+													<th>Occupation</th>
+													<th>Salary</th>
+													<th>City</th>
+												</tr>
+											</thead>
+											<tbody>
+												<%
+													List<SearchResultBean> list = new ArrayList<SearchResultBean>();
+														list = expectationBean.getSearchResultBeanList();
+														for (int i = 0; i < list.size(); i++) {
+															expectationBean.setObj((list.get(i)));
+												%>
+
+												<tr>
+													<td><input type="checkbox" name="selectCheck" value="<%=(list.get(i).getUserId())%>" /></td>
+													<td><a
+														href="detailSearch?userid=<%=(list.get(i).getUserId())%>">
+															<%
+																out.print((list.get(i).getUserId()));
+															%>
+													</a></td>
+													<td>
+														<%
+															out.print((list.get(i).getDob()));
+														%>
+													</td>
+													<td>
+														<%
+															out.print((list.get(i).getHeight()));
+														%>
+													</td>
+													<td>
+														<%
+															out.print((list.get(i).getComplexion()));
+														%>
+													</td>
+													<td>
+														<%
+															out.print((list.get(i).getOccupation()));
+														%>
+													</td>
+													<td>
+														<%
+															out.print((list.get(i).getSalary()));
+														%>
+													</td>
+													<td>
+														<%
+															out.print((list.get(i).getCity()));
+														%>
+													</td>
+												</tr>
+												<%
+													}
+												%>
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div align="center"  class="form-group">
+									<input type="submit" value="Request for Details" name="requestDetails"
+										class=" btn btn-primary btn-lg"></input>
+								</div>
+						</div>
+					</form:form>
+
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<!-- END: CONTENT/TABS/TAB-3 -->
+<!-- END: PAGE CONTENT -->
+
+<!-- END: PAGE CONTAINER -->
+

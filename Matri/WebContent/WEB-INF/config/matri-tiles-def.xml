@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+
+	<definition name=".matri.base.layout" template="/WEB-INF/jsp/layout/matriLayout.jsp">
+		<put-attribute name="title" value="" />
+		<put-attribute name="header" value="/WEB-INF/jsp/layout/header.jsp" />
+		<put-attribute name="navigation" value="/WEB-INF/jsp/layout/navigation.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/layout/footer.jsp" />
+	</definition>
+
+	<definition name=".matri.home" extends=".matri.base.layout">
+		<put-attribute name="title" value="Kanyakubj Matrimonial" />
+		<put-attribute name="body" value="/WEB-INF/jsp/index.jsp" />
+	</definition>
+	
+	<definition name=".matri.registration" extends=".matri.base.layout">
+		<put-attribute name="title" value="Kanyakubj Matrimonial" />
+		<put-attribute name="body" value="/WEB-INF/jsp/registration.jsp" />
+	</definition>
+	
+	<definition name=".matri.searchsummary" extends=".matri.base.layout">
+		<put-attribute name="title" value="Kanyakubj Matrimonial" />
+		<put-attribute name="body" value="/WEB-INF/jsp/searchSummary.jsp" />
+	</definition>
+	
+	<definition name=".matri.search.detail" extends=".matri.base.layout">
+		<put-attribute name="title" value="Kanyakubj Matrimonial" />
+		<put-attribute name="body" value="/WEB-INF/jsp/searchDetail.jsp" />
+	</definition>
+	
+	<definition name=".matri.requestSuccess" extends=".matri.base.layout">
+		<put-attribute name="title" value="Kanyakubj Matrimonial" />
+		<put-attribute name="body" value="/WEB-INF/jsp/requestSuccess.jsp" />
+	</definition>
+	
+	<definition name=".matri.adminPage" extends=".matri.base.layout">
+		<put-attribute name="title" value="Kanyakubj Matrimonial" />
+		<put-attribute name="body" value="/WEB-INF/jsp/adminPage.jsp" />
+	</definition>
+
+	<!-- <definition name=".sos.user.account" extends=".sos.base.layout">
+		<put-attribute name="title" value="My Account" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/userAccount/userAccount.jsp" />
+	</definition>
+
+	<definition name=".sos.blog.detail" extends=".sos.base.layout">
+		<put-attribute name="title" value="Blog" />
+		<put-attribute name="body" value="/WEB-INF/jsp/blog/blogDetail.jsp" />
+	</definition>
+
+	<definition name=".sos.blog" extends=".sos.base.layout">
+		<put-attribute name="title" value="Blog" />
+		<put-attribute name="body" value="/WEB-INF/jsp/blog/blogSummary.jsp" />
+	</definition>
+
+	<definition name=".sos.design" extends=".sos.base.layout">
+		<put-attribute name="title" value="Design" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/design/designApparel.jsp" />
+	</definition> -->
+	
+</tiles-definitions>

@@ -1,0 +1,239 @@
+package com.matri.dao.impl;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.matri.bean.EducationProffessionBean;
+import com.matri.bean.ExpectationBean;
+import com.matri.bean.FamilyDetailsBean;
+import com.matri.bean.HoroscopeBean;
+import com.matri.bean.PhysicalAttributesBean;
+import com.matri.bean.SearchResultBean;
+import com.matri.bean.UserDetailsBean;
+import com.matri.dao.SearchDao;
+
+import util.Constants;
+import util.Util;
+
+@Component(value="searchDao")
+public class SearchDaoImpl implements SearchDao {
+	
+	@Autowired
+	DataSource dataSource;
+	Connection con = null;
+	
+	public Connection getDbConnection() {
+		try {
+			con = dataSource.getConnection();
+			return con;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public List<SearchResultBean> getSearchResultList(ExpectationBean expBean) {
+		Connection con = getDbConnection();
+		StringBuilder query = new StringBuilder(Constants.BASIC_SEARCH_QUERY);
+		StringBuilder queryJoins = new StringBuilder();
+		StringBuilder whereQuery = new StringBuilder(Constants.BASIC_SEARCH_WHERE_CLAUSE);
+		boolean horoscopeAdded = false;
+		if(null != expBean.getComplexion() && !"".equals(expBean.getComplexion())) 
+			whereQuery.append("AND pa.complexion = "+expBean.getComplexion());
+		if(0 != expBean.getWeight() && !"".equals(expBean.getWeight()))
+			whereQuery.append("AND pa.weight > "+expBean.getWeight());
+		if(0 != expBean.getHeightMin() && !"".equals(expBean.getHeightMin()))
+			whereQuery.append(" AND pa.height_feet > "+expBean.getHeightMin());
+		if(null != expBean.getCaste() && !"".equals(expBean.getCaste())) {
+			horoscopeAdded = true;
+			queryJoins.append(Constants.HOROSCOPE_DEATILS_JOIN);
+			whereQuery.append(" AND hd.caste = '"+expBean.getCaste().toString()+"'");
+		}
+		if(null != expBean.getEducationalQualification() && !"".equals(expBean.getEducationalQualification())) 
+			whereQuery.append(" AND ep.educatioonal_qualification = "+expBean.getEducationalQualification());
+		if(null != expBean.getGotra() && !"".equals(expBean.getGotra())) {
+			if(!horoscopeAdded) {
+				horoscopeAdded = true;
+				queryJoins.append(Constants.HOROSCOPE_DEATILS_JOIN);
+			}
+			whereQuery.append(" AND hd.gotra = "+expBean.getGotra());
+		}
+		if(null != expBean.getManglik() && !"".equals(expBean.getManglik())) {
+			if(!horoscopeAdded) {
+				horoscopeAdded = true;
+				queryJoins.append(Constants.HOROSCOPE_DEATILS_JOIN);
+			}
+			whereQuery.append(" AND hd.manglik = "+expBean.getManglik());
+		}
+		if(null != expBean.getMaritalStatus() && !"".equals(expBean.getMaritalStatus()))
+			whereQuery.append(" um.marital_status = "+expBean.getMaritalStatus());
+		if(null != expBean.getOccupation() && !"".equals(expBean.getOccupation())) 
+			whereQuery.append(" AND ep.occupation = "+expBean.getOccupation());
+		if(null != expBean.getPrefferedCity() && !"".equals(expBean.getPrefferedCity())) 
+			whereQuery.append(" AND ep.city = "+expBean.getPrefferedCity());
+		if(null != expBean.getSpectacles() && !"".equals(expBean.getSpectacles()))
+			whereQuery.append(" AND pa.spectacles = "+expBean.getSpectacles());
+		if(null != expBean.getSubCaste() && !"".equals(expBean.getSubCaste())) {
+			if(!horoscopeAdded) {
+				horoscopeAdded = true;
+				queryJoins.append(Constants.HOROSCOPE_DEATILS_JOIN);
+			}
+			whereQuery.append(" AND hd.sub_caste = "+expBean.getSubCaste());
+		}
+	
+		String finalQuery = query.toString()+queryJoins.toString()+whereQuery.toString();
+		List<SearchResultBean> beanList = new ArrayList<SearchResultBean>();
+		System.out.println(finalQuery);
+		PreparedStatement stmt;
+		try {
+			stmt = con.prepareStatement(finalQuery);
+			ResultSet rs = stmt.executeQuery();
+
+			while(rs.next()) {
+				SearchResultBean sBean = new SearchResultBean();
+				sBean.setUserId(rs.getString("UserId"));
+				sBean.setHeight(rs.getInt("Height"));
+				sBean.setDob(rs.getDate("DOB"));
+				sBean.setComplexion(rs.getString("Complexion"));
+				sBean.setCity(rs.getString("City"));
+				sBean.setOccupation(rs.getString("Occupation"));
+				sBean.setSalary(rs.getDouble("Salary"));
+				
+				beanList.add(sBean);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return beanList;
+	}
+
+	@Override
+	public UserDetailsBean getDetailSearch(String userId) {
+		if(null == con)
+			con = getDbConnection();
+
+		StringBuilder query = new StringBuilder(Constants.DETAIL_SEARCH_QUERY);
+		StringBuilder whereQuery = new StringBuilder(Constants.BASIC_SEARCH_WHERE_CLAUSE);
+		whereQuery.append("AND u.user_master_id = "+userId);
+
+		String finalQuery = query.toString()+whereQuery.toString();
+		System.out.println(finalQuery);
+		PreparedStatement pstmt;
+		UserDetailsBean userDetailsBean = new UserDetailsBean();
+		try {
+			pstmt = con.prepareStatement(finalQuery);
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				//userDetailsBean.setContactNumber1(rs.getLong(""));
+				//userDetailsBean.setContactNumber2(rs.getLong(""));
+				//userDetailsBean.setDateOfBirth(rs.getDate("DOB"));
+				userDetailsBean.setEmailId(rs.getString("EmailId"));
+				userDetailsBean.setFirstName(rs.getString("FirstName"));
+				userDetailsBean.setGender(rs.getString("Gender"));
+				userDetailsBean.setLastName(rs.getString("LastName"));
+				userDetailsBean.setMaritalStatus(rs.getString("MaritalStatus"));
+				userDetailsBean.setMiddleName(rs.getString("MiddleName"));
+				userDetailsBean.setNationality(rs.getString("Nationality"));
+				userDetailsBean.setUserDetailId(rs.getInt("UserId"));
+				EducationProffessionBean eduProBean = new EducationProffessionBean();
+				eduProBean.setAssets(rs.getString("Assets"));
+				eduProBean.setCity(rs.getString("City"));
+				eduProBean.setCompanyName(rs.getString("CompanyName"));
+				eduProBean.setCurrentAddress(rs.getString("CurrentAddress"));
+				eduProBean.setDesignation(rs.getString("Designation"));
+				eduProBean.setEducationalQualification(rs.getString("EducationalProfession"));
+				eduProBean.setOccupation(rs.getString("Occupation"));
+				eduProBean.setSalary(rs.getInt("Salary"));
+				eduProBean.setTypeOfOccupation(rs.getString("TypeOfOccupation"));
+				userDetailsBean.setEducationProffessionBean(eduProBean);
+				PhysicalAttributesBean physicalAttr = new PhysicalAttributesBean();
+				physicalAttr.setBloodGroup(rs.getString("BloodGroup"));
+				physicalAttr.setComplexion(rs.getString("Complexion"));
+				physicalAttr.setHeightFeet(rs.getInt("HeightFeet"));
+				physicalAttr.setHeightInch(rs.getInt("HeightInches"));
+				physicalAttr.setPhysicalDisability(rs.getString("PhysicalDisability"));
+				physicalAttr.setSpectacles(rs.getString("Spectacles"));
+				physicalAttr.setWeight(rs.getInt("Weight"));
+				userDetailsBean.setPhysicalAttributesBean(physicalAttr);
+				HoroscopeBean hBean = new HoroscopeBean();
+				hBean.setCaste(rs.getString("Caste"));
+				hBean.setGan(rs.getString("Gan"));
+				hBean.setGotra(rs.getString("Gotra"));
+				hBean.setManglik(rs.getString("Manglik"));
+				hBean.setNadi(rs.getString("Nadi"));
+				hBean.setNakshtra(rs.getString("Nakshatra"));
+				hBean.setPlaceOfBirth(rs.getString("PlaceOfBirth"));
+				hBean.setSubCaste(rs.getString("SubCaste"));
+				hBean.setTimeOfBirth(rs.getString("TimeOfBirth"));
+				userDetailsBean.setHoroscopeBean(hBean);
+				FamilyDetailsBean familyBean = new FamilyDetailsBean();
+				familyBean.setFathersName(rs.getString("FathersName"));
+				familyBean.setFathersNativeAddress(rs.getString("FamilyNativeAddress"));
+				familyBean.setFathersOccupation(rs.getString("FathersOccupation"));
+				familyBean.setJointFamily(rs.getString("JointFamily"));
+				familyBean.setMothersName(rs.getString("MothersName"));
+				familyBean.setMothersNativeAddress(rs.getString("MothersnativeAddress"));
+				familyBean.setMothersOccupation(rs.getString("MothersOccupation"));
+				familyBean.setNumberOfBrothers(rs.getInt("NumOfBrothers"));
+				familyBean.setNumberOfSisters(rs.getInt("NumOfSisters"));
+				familyBean.setOtherDescription(rs.getString("Description"));
+				familyBean.setParentsAddress(rs.getString("ParentsAddress"));
+				//familyBean.setParentNumber(rs.getLong(""));
+				//familyBean.setRelativesLastNames(rs.getString(""));
+				//familyBean.setSecondaryContactNumber(rs.getLong("SecondaryConatctNum"));
+				userDetailsBean.setFamilyDetailBean(familyBean);
+				ExpectationBean expBean = new ExpectationBean();
+				expBean.setAgeFrom(rs.getInt("ExpAgeFrom"));
+				expBean.setAgeTo(rs.getInt("ExpAgeTo"));
+				expBean.setCaste(rs.getString("ExpCaste"));
+				expBean.setComplexion(rs.getString("ExpComplexion"));
+				expBean.setEducationalQualification(rs.getString("ExpEducation"));
+				expBean.setGotra(rs.getString("ExpGotra"));
+				expBean.setHeightMin(rs.getInt("ExpMinimumHeight"));
+				expBean.setManglik(rs.getString("ExpManglik"));
+				expBean.setOccupation(rs.getString("ExpOccupation"));
+				expBean.setPrefferedCity(rs.getString("ExpPreferredStatus"));
+				expBean.setSpectacles(rs.getString("ExpSpectacles"));
+				expBean.setWeight(rs.getInt("ExpWeight"));
+				userDetailsBean.setExpectationBean(expBean);
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return userDetailsBean;
+	}
+
+
+
+	public void requestAllDetails(String[] checkedUserId){
+		int userId=102;
+		PreparedStatement pstmt=null;
+		String query = "insert into profile_requestor(user_master_id, profile_requested, request_status, created_by, created_datetime ) "
+				+ "values (?,?,?,?,current_timestamp)";
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1,userId);
+			pstmt.setString(2, Util.getCommaSeparatedString(checkedUserId));
+			pstmt.setString(3, "Requested");
+			pstmt.setString(4,"sysadmin");
+			pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+}

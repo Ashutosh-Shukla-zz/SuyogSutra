@@ -1,0 +1,22 @@
+package com.matri.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.matri.bean.UserDetailsBean;
+import com.matri.dao.UserDao;
+import com.matri.service.UserService;
+
+@Component (value ="userService")
+public class UserServiceImpl implements UserService {
+
+	@Autowired
+	UserDao userDao;
+	
+	@Override
+	public String register(UserDetailsBean userDetailsBean) {
+		return userDao.insertUser(userDetailsBean);
+
+	}
+
+}
